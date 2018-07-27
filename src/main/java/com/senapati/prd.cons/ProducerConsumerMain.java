@@ -1,14 +1,12 @@
 package com.senapati.prd.cons;
 
+import com.senapati.util.ApplicationConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class ProducerConsumerMain {
 
@@ -18,8 +16,11 @@ public class ProducerConsumerMain {
 
     public static void main(String args[]){
 
-        Producer producer = new Producer();
-        Consumer consumer = new Consumer();
+
+        BlockingQueue<String> integerBlockingQueue = new ArrayBlockingQueue<String>(ApplicationConstants.QUEUE_SIZE);
+
+        Producer producer = new Producer(integerBlockingQueue, ApplicationConstants.TOTAL_MESSAGES_TO_PRODUCE);
+        Consumer consumer = new Consumer(integerBlockingQueue);
 
         List<Callable<String>> callableTasks = new ArrayList<Callable<String>>();
         callableTasks.add(producer);
