@@ -22,25 +22,25 @@ public class Producer implements Callable {
         this.messageCount = new AtomicInteger(messageCount);
     }
 
-    public Object call()  {
-        logger.info("producer thread {} started producing at {}", Thread.currentThread().getName(), new Date());
+    public String call()  {
+        logger.info("started producing at {}", new Date());
         Random random = new Random();
         try {
-            while(messageCount.get() > 0){
+            while(messageCount.decrementAndGet() > 0){
                 String message = new StringBuilder(Thread.currentThread().getName())
                         .append("-----")
                         .append(messageCount)
                         .toString();
+                logger.info("putting message {} to queue", message);
                 blockingQueue.put(message);
-                Thread.sleep(random.nextInt(10) * 1000);
-                messageCount.decrementAndGet();
+                Thread.sleep(random.nextInt(3) * 1000);
             }
             blockingQueue.put(ApplicationConstants.TERMINAL_MESSAGE);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        logger.info("producer thread {} finished producing at {}", Thread.currentThread().getName(), new Date());
+        logger.info("finished producing at {}", new Date());
         return "DONE";
     }
 }

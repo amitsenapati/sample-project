@@ -20,20 +20,20 @@ public class Consumer implements Callable {
     }
 
     public String call() {
-        logger.info("Consumer thread {} started consuming at {}", Thread.currentThread().getName(), new Date());
+        logger.info("Consumer thread started consuming at {}", new Date());
         Random random = new Random();
         try {
             String message = integerBlockingQueue.take();
             while(!message.equals(ApplicationConstants.TERMINAL_MESSAGE)){
-                logger.info("Consumer thread {} processing message {}", Thread.currentThread().getName(), message);
-                Thread.sleep(random.nextInt(10) * 1000);
+                logger.info("Processing message {}", message);
+                Thread.sleep(random.nextInt(3) * 1000);
                 message = integerBlockingQueue.take();
             }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        logger.info("Consumer thread {} finished consuming at {}", Thread.currentThread().getName(), new Date());
+        logger.info("Consumer thread finished consuming at {}", new Date());
         return "done";
     }
 }

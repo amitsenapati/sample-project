@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 
 public class ProducerConsumerMain {
 
-    private static final int MAX_THREADS = 4;
+    private static final int MAX_THREADS = 8;
 
     private static final Logger logger = LoggerFactory.getLogger(ProducerConsumerMain.class);
 
@@ -36,6 +36,7 @@ public class ProducerConsumerMain {
         ExecutorService executorService = Executors.newFixedThreadPool(MAX_THREADS);
         try {
             List<Future<String>> futures = executorService.invokeAll(callableTasks);
+            logger.info("size of futures list {}", futures.size());
         } catch (InterruptedException e) {
             logger.error("Error in thread execution");
         }
